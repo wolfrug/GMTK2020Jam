@@ -19,6 +19,8 @@ public class GDDE_PointerUp : GenericDragAndDropEvents { }
 public class GenericDragAndDrop : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public Transform targetTransform;
+    public Canvas targetCanvas;
+    private int defaultLayer;
     public bool interactable = true;
     public bool dragWithLeft = true;
     public bool pointerIsOver = false;
@@ -35,6 +37,7 @@ public class GenericDragAndDrop : MonoBehaviour, IPointerDownHandler, IPointerUp
 
     void Start()
     {
+        if (targetCanvas != null) { defaultLayer = targetCanvas.sortingOrder; };
         if (targetTransform == null)
         {
             targetTransform = transform;
@@ -55,7 +58,7 @@ public class GenericDragAndDrop : MonoBehaviour, IPointerDownHandler, IPointerUp
     {
         //   Debug.Log("Pointer enter" + coll);
         pointerIsOver = true;
-        pointerDown.Invoke(coll);
+        pointerEntered.Invoke(coll);
     }
     public void OnPointerExit(PointerEventData coll)
     {
@@ -110,6 +113,7 @@ public class GenericDragAndDrop : MonoBehaviour, IPointerDownHandler, IPointerUp
                     DragPoint.position = pointerClickLocation;
                     targetTransform.SetParent(DragPoint, true);
                     dragging = true;
+                    targetCanvas.sortingOrder = 9999;
                 }
                 else
                 {
@@ -122,14 +126,15 @@ public class GenericDragAndDrop : MonoBehaviour, IPointerDownHandler, IPointerUp
                 {
                     targetTransform.SetParent(null, true);
                     dragging = false;
+                    targetCanvas.sortingOrder = defaultLayer + 1;
                 };
             }
         }
-        else
+        /*else
         {
             targetTransform.SetParent(null, true);
             dragging = false;
-        }
+        }*/
     }
 
 }
