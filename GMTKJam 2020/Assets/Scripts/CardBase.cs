@@ -13,6 +13,10 @@ public class CardBase : ScriptableObjectBase
 {
     public Sprite image_;
     public CardSide side_;
+
+    [Multiline]
     public string description_;
+    public float weight_ = 1f;
+    public CardEffect[] effects;
 
 }

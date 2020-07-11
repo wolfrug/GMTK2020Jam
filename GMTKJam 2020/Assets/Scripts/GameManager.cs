@@ -1,13 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using Extensions;
+
+[System.Serializable]
+public class GameStateEvent : UnityEvent<GameState> { }
 
 public enum GameStates
 {
-    INIT = 0000,
-    DRAFT = 1000,
-    PLAY = 2000,
-    ASSESS = 3000
+    NONE = 0000,
+    INIT = 1000,
+    DRAFT = 2000,
+    PLAY = 3000,
+    ASSESS = 4000,
+    DEFEAT = 5000,
+    WIN = 6000,
+
 }
 
 public enum Resources
@@ -18,7 +27,8 @@ public enum Resources
     MORALE = 3000,
     PEOPLE = 4000
 }
-public struct Resource
+[System.Serializable]
+public class Resource
 {
     public ResourceData data;
     public int currentValue;
@@ -29,18 +39,25 @@ public struct Resource
     }
 }
 
+[System.Serializable]
+public class GameState
+{
+    public GameStates state;
+    public GameStateEvent evtStart;
+    public GameStates nextState;
+}
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-    public List<CardObject> playerHand = new List<CardObject> { };
-    public List<CardObject> enemyHand = new List<CardObject> { };
-
-    public List<CardBase> playerCardDatas = new List<CardBase> { };
-    public List<CardBase> enemyCardDatas = new List<CardBase> { };
-    public int playerHandMax = 8;
-    public int enemyHandMax = 8;
+    public GameState[] gameStates;
+    private GameState currentState;
+    public int dayCount = 0;
     public ResourceData[] resources;
-    public Dictionary<Resources, Resource> resourceDict = new Dictionary<Resources, Resource> { };
+    public DayData[] days;
+    private Dictionary<Resources, Resource> resourceDict = new Dictionary<Resources, Resource> { };
+    private Dictionary<GameStates, GameState> gameStateDict = new Dictionary<GameStates, GameState> { };
+    private Dictionary<int, DayData> daysDict = new Dictionary<int, DayData> { };
     // Start is called before the first frame update
 
     void Awake()
@@ -53,30 +70,86 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        foreach (GameState states in gameStates)
+        {
+            gameStateDict.Add(states.state, states);
+        }
+        currentState = gameStateDict[GameStates.INIT];
+        gameStateDict[currentState.state].evtStart.Invoke(currentState);
     }
-    void Start()
+    public void Init()
     {
         foreach (ResourceData res in resources)
         {
             resourceDict.Add(res.type, new Resource(res, res.startValue));
+            Debug.Log("Added resource " + res.type + " with value " + resourceDict[res.type].currentValue);
+        }
+        for (int i = 0; i < days.Length; i++)
+        {
+            daysDict.Add(i, days[i]);
+        }
+        UIManager.instance.Init();
+        NextState();
+    }
+
+    public void NextState()
+    {
+        if (currentState.nextState != GameStates.NONE)
+        {
+            currentState = gameStateDict[currentState.nextState];
+            gameStateDict[currentState.state].evtStart.Invoke(currentState);
+            Debug.Log("Changed states to " + currentState.state);
+        }
+    }
+    public GameStates GameState
+    {
+        get
+        {
+            if (currentState != null)
+            {
+                return currentState.state;
+            }
+            else
+            {
+                return GameStates.NONE;
+            }
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
 
+    public void EndDay()
+    {
+        NextState();
+    }
+    public void StartNextDay()
+    {
+        dayCount++;
+        CardGameManager.instance.StartNextDay();
+    }
+
+    public DayData GetCurrentDay()
+    {
+        if (dayCount < days.Length)
+        {
+            return daysDict[dayCount];
+        }
+        else
+        {
+            return daysDict[days.Length - 1];
+        }
     }
 
     public void AddResource(Resources type, int amount)
     { // Use negative amounts for negative amounts
         Resource outRes;
         resourceDict.TryGetValue(type, out outRes);
-        Mathf.Clamp(outRes.currentValue += amount, -1, outRes.data.maxValue);
+        Mathf.Clamp(outRes.currentValue += amount, -99, outRes.data.maxValue);
+        UIManager.instance.UpdateResource(type);
         if (outRes.currentValue <= 0)
         {
-            Defeat(outRes.data.type);
+            //Defeat(outRes.data.type);
         }
+        Debug.Log("Changed resource " + type.ToString() + " to " + outRes.currentValue);
     }
     public int GetResource(Resources type)
     {
@@ -85,40 +158,23 @@ public class GameManager : MonoBehaviour
         return outRes.currentValue;
     }
 
+    public bool CheckDefeat()
+    {
+        foreach (KeyValuePair<Resources, Resource> kvp in resourceDict)
+        {
+            if (kvp.Value.currentValue <= 0)
+            {
+                Defeat(kvp.Key);
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void Defeat(Resources reason)
     {
         Debug.Log("LOST BECAUSE OF " + reason);
-    }
-
-    public void TriggerFlipToPlayerSide(GameObject target)
-    {
-        CardObject card = target.GetComponent<CardObject>();
-        card.FlipToPlayerSide(true);
-        AddCardToPlayerHand(card);
-    }
-    public void TriggerFlipToEnemySide(GameObject target)
-    {
-        CardObject card = target.GetComponent<CardObject>();
-        card.FlipToPlayerSide(false);
-        AddCardToEnemyHand(card);
-    }
-
-    public void AddCardToPlayerHand(CardObject card)
-    {
-        if (playerHand.Count < playerHandMax && !playerHand.Contains(card))
-        {
-            playerHand.Add(card);
-            UIManager.instance.AddCardToHand(card.dataPlayer.side_, card);
-            card.gameObject.SetActive(false);
-        }
-    }
-    public void AddCardToEnemyHand(CardObject card)
-    {
-        if (enemyHand.Count < enemyHandMax && !enemyHand.Contains(card))
-        {
-            enemyHand.Add(card);
-            UIManager.instance.AddCardToHand(card.dataEnemy.side_, card);
-            card.gameObject.SetActive(false);
-        }
+        currentState = gameStateDict[GameStates.DEFEAT];
+        currentState.evtStart.Invoke(currentState);
     }
 }

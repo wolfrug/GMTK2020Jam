@@ -22,6 +22,8 @@ public class GenericDragAndDrop : MonoBehaviour, IPointerDownHandler, IPointerUp
     public Canvas targetCanvas;
     private int defaultLayer;
     public bool interactable = true;
+
+    public List<GameStates> interactableStates = new List<GameStates> { GameStates.DRAFT };
     public bool dragWithLeft = true;
     public bool pointerIsOver = false;
     public bool pointerIsDown = false;
@@ -77,7 +79,7 @@ public class GenericDragAndDrop : MonoBehaviour, IPointerDownHandler, IPointerUp
         }
         else if (dragWithLeft && coll.button != PointerEventData.InputButton.Left)
         {
-            Debug.Log("Right clicked");
+         //   Debug.Log("Right clicked");
             rightClick.Invoke(coll);
         }
         else
@@ -85,7 +87,7 @@ public class GenericDragAndDrop : MonoBehaviour, IPointerDownHandler, IPointerUp
             pointerIsDown = true;
             pointerDown.Invoke(coll);
         }
-        Debug.Log(coll.clickCount);
+//        Debug.Log(coll.clickCount);
         if (coll.clickCount > 1)
         {
             pointerDoubleClick.Invoke(coll);
@@ -104,7 +106,7 @@ public class GenericDragAndDrop : MonoBehaviour, IPointerDownHandler, IPointerUp
 
     void Update()
     {
-        if (interactable)
+        if (interactable && interactableStates.Contains(GameManager.instance.GameState))
         {
             if (pointerIsOver && pointerIsDown)
             {
@@ -135,6 +137,14 @@ public class GenericDragAndDrop : MonoBehaviour, IPointerDownHandler, IPointerUp
             targetTransform.SetParent(null, true);
             dragging = false;
         }*/
+    }
+
+    void OnDestroy()
+    {
+        if (dragPointObj != null)
+        {
+            Destroy(dragPointObj);
+        }
     }
 
 }

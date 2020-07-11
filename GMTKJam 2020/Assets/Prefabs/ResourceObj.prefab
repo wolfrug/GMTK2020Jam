@@ -366,6 +366,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 4051023910976244694}
+  nameText: {fileID: 1880456199483074283}
   icon: {fileID: 4051023912133767350}
   resource: {fileID: 0}
   animator: {fileID: 4051023910989737339}

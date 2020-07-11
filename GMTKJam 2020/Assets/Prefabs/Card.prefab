@@ -88,6 +88,7 @@ GameObject:
   - component: {fileID: 5408092970504885316}
   - component: {fileID: 5408092970504885319}
   - component: {fileID: 5408092970504885314}
+  - component: {fileID: 2883474992292703694}
   m_Layer: 8
   m_Name: CardCanvas
   m_TagString: Untagged
@@ -195,6 +196,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!225 &2883474992292703694
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5408092970504885321}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &5408092970674399045
 GameObject:
   m_ObjectHideFlags: 0
@@ -278,6 +291,7 @@ MonoBehaviour:
   cardAnimator: {fileID: 5408092970504885314}
   playerSide: {fileID: 5408092970859771257}
   enemySide: {fileID: 5408092971456838574}
+  cardPlayed: 0
 --- !u!50 &5408092970674399042
 Rigidbody2D:
   serializedVersion: 4
@@ -441,6 +455,7 @@ MonoBehaviour:
   targetTransform: {fileID: 5408092970674399040}
   targetCanvas: {fileID: 5408092970504885317}
   interactable: 1
+  interactableStates: d0070000
   dragWithLeft: 1
   pointerIsOver: 0
   pointerIsDown: 0

@@ -16,6 +16,9 @@ public class CardObject : MonoBehaviour
     public Animator cardAnimator;
     public Image playerSide;
     public Image enemySide;
+    public bool cardPlayed = false;
+
+    public static int debugCounter = 0;
     // Start is called before the first frame update
     public virtual void Start()
     {
@@ -36,7 +39,7 @@ public class CardObject : MonoBehaviour
 
     void FlipCard(UnityEngine.EventSystems.PointerEventData data)
     {
-        Debug.Log("Flipping card");
+        // Debug.Log("Flipping card");
         cardAnimator.SetBool("flipped", !cardAnimator.GetBool("flipped"));
         currentSide = cardAnimator.GetBool("flipped") ? dataEnemy.side_ : dataPlayer.side_;
     }
@@ -66,6 +69,51 @@ public class CardObject : MonoBehaviour
                 FlipCard(null);
             }
         }
+    }
+
+    public IEnumerator PlayCard(CardSide sideToPlay = CardSide.NONE) // plays the good or bad effect
+    {
+        debugCounter++;
+        Debug.Log("Cards played total: " + debugCounter);
+        if (sideToPlay == CardSide.NONE) // If set to none, play the appropriate side
+        {
+            if (currentSide == dataPlayer.side_)
+            {
+                foreach (CardEffect effect in dataPlayer.effects)
+                {
+                    effect.PlayEffect();
+                    yield return new WaitForSeconds(effect.effectTime);
+                }
+            }
+            else
+            {
+                foreach (CardEffect effect in dataEnemy.effects)
+                {
+                    effect.PlayEffect();
+                    yield return new WaitForSeconds(effect.effectTime);
+                }
+            }
+        }
+        else
+        { //play the side wished for
+            if (sideToPlay == dataPlayer.side_)
+            {
+                foreach (CardEffect effect in dataPlayer.effects)
+                {
+                    effect.PlayEffect();
+                    yield return new WaitForSeconds(effect.effectTime);
+                }
+            }
+            else if (sideToPlay == dataEnemy.side_)
+            {
+                foreach (CardEffect effect in dataEnemy.effects)
+                {
+                    effect.PlayEffect();
+                    yield return new WaitForSeconds(effect.effectTime);
+                }
+            }
+        }
+        cardPlayed = true;
     }
     // Update is called once per frame
     void Update()
