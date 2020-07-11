@@ -7,6 +7,7 @@ public class CardEffect : ScriptableObjectBase
     public Resources affectedResource;
     public int change;
     public float effectTime = 1f;
+    public ObjectSound soundEffect;
 
     public virtual void PlayEffect()
     { // basic effect -> change resource

@@ -7,12 +7,13 @@ using TMPro;
 public class CardObject : MonoBehaviour
 {
     public CardBase dataPlayer;
+    public CardBase dataEnemy;
     public GameObject cardDescriptionObj;
     public TextMeshProUGUI cardDescriptionText;
     public bool startOnRandomSide = true;
     public CardSide currentSide;
-    public CardBase dataEnemy;
     public GenericDragAndDrop dragScript;
+    public ObjectAudio audioSource;
     public Animator cardAnimator;
     public Image playerSide;
     public Image enemySide;

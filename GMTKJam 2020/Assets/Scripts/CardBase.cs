@@ -18,5 +18,6 @@ public class CardBase : ScriptableObjectBase
     public string description_;
     public float weight_ = 1f;
     public CardEffect[] effects;
+    public ObjectSound sounds;
 
 }

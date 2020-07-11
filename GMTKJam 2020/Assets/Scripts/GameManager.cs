@@ -114,6 +114,10 @@ public class GameManager : MonoBehaviour
                 return GameStates.NONE;
             }
         }
+        set
+        {
+            currentState = gameStateDict[value];
+        }
     }
 
 
@@ -124,7 +128,21 @@ public class GameManager : MonoBehaviour
     public void StartNextDay()
     {
         dayCount++;
-        CardGameManager.instance.StartNextDay();
+        if (dayCount >= 8)
+        {
+            WinGame();
+        }
+        else
+        {
+            UIManager.instance.StartNewDay();
+            CardGameManager.instance.StartNextDay();
+        };
+    }
+
+    void WinGame()
+    {
+        GameState = GameStates.WIN;
+        Debug.Log("Victory!!");
     }
 
     public DayData GetCurrentDay()

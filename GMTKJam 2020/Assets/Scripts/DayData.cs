@@ -9,6 +9,7 @@ public class DayData : ScriptableObjectBase
     public float draftTime = 60f;
     public CardBase[] enemyCards;
     public CardBase[] playerCards;
+    public ObjectSound soundEffect;
 
     [Multiline]
     public string fluffText;

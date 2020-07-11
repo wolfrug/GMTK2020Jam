@@ -11,7 +11,7 @@ public class UIManager : MonoBehaviour
     public Transform playerHandTr;
     public Transform enemyHandTr;
     public GameObject UIcardPrefab;
-
+    public GameObject UIcardVisualizerPrefab;
     public Animator DayPassPanelAnimator;
     public TextMeshProUGUI dayNr;
     public TextMeshProUGUI dayFluffText;
@@ -19,6 +19,9 @@ public class UIManager : MonoBehaviour
     public Dictionary<Resources, UIResourceObj> resourceObjDict = new Dictionary<Resources, UIResourceObj> { };
     public Dictionary<CardObject, CardObjectUI> playerHand = new Dictionary<CardObject, CardObjectUI> { };
     public Dictionary<CardObject, CardObjectUI> enemyHand = new Dictionary<CardObject, CardObjectUI> { };
+    public List<GameObject> visualizersPlayer = new List<GameObject> { };
+    public List<GameObject> visualizersEnemy = new List<GameObject> { };
+
 
     void Awake()
     {
@@ -47,6 +50,29 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void StartNewDay()
+    {
+        // Add visualizers
+        for (int i = 0; i < GameManager.instance.GetCurrentDay().cardsDrawn / 2; i++)
+        {
+            CreateVisualizer(CardSide.PLAYER);
+            CreateVisualizer(CardSide.OCEAN);
+        }
+    }
+    public void CreateVisualizer(CardSide side)
+    {
+        if (side == CardSide.PLAYER)
+        {
+            GameObject newVisualizer = Instantiate(UIcardVisualizerPrefab, playerHandTr);
+            visualizersPlayer.Add(newVisualizer);
+        }
+        else
+        {
+            GameObject newVisualizer = Instantiate(UIcardVisualizerPrefab, enemyHandTr);
+            visualizersEnemy.Add(newVisualizer);
+        }
+    }
+
     public void AddCardToHand(CardSide side, CardObject card)
     {
         GameObject UICard = Instantiate(UIcardPrefab, side == card.dataPlayer.side_ ? playerHandTr : enemyHandTr);
@@ -58,10 +84,17 @@ public class UIManager : MonoBehaviour
         if (side == card.dataPlayer.side_)
         {
             playerHand.Add(card, spawnedCard);
+            Debug.Log("Visualizer 0: " + visualizersPlayer[0], visualizersPlayer[0]);
+            Destroy(visualizersPlayer[0]);
+            visualizersPlayer.RemoveAt(0);
+            Debug.Log("Destroying player visualizer");
         }
         else
         {
             enemyHand.Add(card, spawnedCard);
+            Destroy(visualizersEnemy[0]);
+            visualizersEnemy.RemoveAt(0);
+            Debug.Log("Destroying enemy visualizer");
         }
     }
 
@@ -83,6 +116,7 @@ public class UIManager : MonoBehaviour
         {
             Destroy(selectedCard.gameObject);
             playerHand.Remove(card);
+            CreateVisualizer(CardSide.PLAYER);
         }
         else
         {
@@ -91,6 +125,7 @@ public class UIManager : MonoBehaviour
             {
                 Destroy(selectedCard.gameObject);
                 enemyHand.Remove(card);
+                CreateVisualizer(CardSide.OCEAN);
             }
         }
     }
@@ -101,23 +136,34 @@ public class UIManager : MonoBehaviour
         {
             Destroy(kvp.Value.gameObject);
         }
+        playerHand.Clear();
         foreach (KeyValuePair<CardObject, CardObjectUI> kvp in enemyHand)
         {
             Destroy(kvp.Value.gameObject);
         }
+        enemyHand.Clear();
+        foreach (GameObject vis in visualizersPlayer)
+        {
+            Destroy(vis);
+        }
+        visualizersPlayer.Clear();
+        foreach (GameObject vis in visualizersEnemy)
+        {
+            Destroy(vis);
+        }
+        visualizersEnemy.Clear();
+
     }
 
     public void SwitchDay()
     {
         ClearHands();
-        StartCoroutine(SwitchDayCR());
-    }
-    IEnumerator SwitchDayCR()
-    {
         DayPassPanelAnimator.SetBool("visible", true);
         dayNr.text = GameManager.instance.dayCount.ToString();
         dayFluffText.text = GameManager.instance.GetCurrentDay().fluffText;
-        yield return new WaitForSeconds(4f);
+    }
+    public void FinishSwitchingDay()
+    {
         DayPassPanelAnimator.SetBool("visible", false);
         GameManager.instance.NextState();
     }
