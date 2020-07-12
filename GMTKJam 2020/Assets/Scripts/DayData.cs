@@ -21,7 +21,10 @@ public class DayData : ScriptableObjectBase
             Dictionary<CardBase, float> returnDict = new Dictionary<CardBase, float> { };
             foreach (CardBase card in enemyCards)
             {
-                returnDict.Add(card, card.weight_);
+                if (!returnDict.ContainsKey(card))
+                {
+                    returnDict.Add(card, card.weight_);
+                };
             }
             return returnDict;
         }
@@ -33,7 +36,10 @@ public class DayData : ScriptableObjectBase
             Dictionary<CardBase, float> returnDict = new Dictionary<CardBase, float> { };
             foreach (CardBase card in playerCards)
             {
-                returnDict.Add(card, card.weight_);
+                if (!returnDict.ContainsKey(card))
+                {
+                    returnDict.Add(card, card.weight_);
+                };
             }
             return returnDict;
         }

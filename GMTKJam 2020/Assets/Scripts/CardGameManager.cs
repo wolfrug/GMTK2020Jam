@@ -43,11 +43,6 @@ public class CardGameManager : MonoBehaviour
     public void SpawnCards()
     {
         DayData currentDay = GameManager.instance.GetCurrentDay();
-        // Delete all old cards
-        foreach (CardObject crd in allCards)
-        {
-            Destroy(crd);
-        }
         // Spawn new ones according to the day!
         for (int i = 0; i < currentDay.cardsDrawn; i++)
         {
@@ -71,7 +66,7 @@ public class CardGameManager : MonoBehaviour
 
     CardObject SpawnCard()
     {
-        GameObject spawnedCardGO = Instantiate(cardPrefab, spawnZone.transform, true);
+        GameObject spawnedCardGO = Instantiate(cardPrefab, null, true);
         CardObject card = spawnedCardGO.GetComponent<CardObject>();
         return card;
     }
@@ -79,6 +74,7 @@ public class CardGameManager : MonoBehaviour
     public void TriggerFlipToPlayerSide(GameObject target)
     {
         CardObject card = target.GetComponent<CardObject>();
+        if (card.currentSide != CardSide.PLAYER) { return; }
         //card.currentSide = card.dataPlayer.side_;
         card.FlipToPlayerSide(true);
         AddCardToPlayerHand(card);
@@ -87,6 +83,7 @@ public class CardGameManager : MonoBehaviour
     public void TriggerFlipToEnemySide(GameObject target)
     {
         CardObject card = target.GetComponent<CardObject>();
+        if (card.currentSide != CardSide.OCEAN) { return; }
         //card.currentSide = card.dataEnemy.side_;
         card.FlipToPlayerSide(false);
         AddCardToEnemyHand(card);
@@ -162,15 +159,15 @@ public class CardGameManager : MonoBehaviour
             // PLAYER
             randomCard = playerHand[Random.Range(0, playerHand.Count)];
             yield return StartCoroutine(randomCard.PlayCard(CardSide.PLAYER));
-            Destroy(randomCard.gameObject);
+            //Destroy(randomCard.gameObject);
             playerHand.Remove(randomCard);
-            UIManager.instance.UseCard(randomCard);
+            yield return StartCoroutine(UIManager.instance.UseCard(randomCard));
             // OCEAN
             randomCard = enemyHand[Random.Range(0, enemyHand.Count)];
             yield return StartCoroutine(randomCard.PlayCard(CardSide.OCEAN));
-            Destroy(randomCard.gameObject);
+            //Destroy(randomCard.gameObject);
             enemyHand.Remove(randomCard);
-            UIManager.instance.UseCard(randomCard);
+            yield return StartCoroutine(UIManager.instance.UseCard(randomCard));
         }
         Debug.LogWarning("FINISHED AUTOMATIC CARD GAME");
         yield return new WaitForSeconds(1f);
@@ -186,7 +183,8 @@ public class CardGameManager : MonoBehaviour
     {
         foreach (CardObject card in allCards)
         {
-            Destroy(card);
+            Debug.Log("Destroying " + card.gameObject, card.gameObject);
+            Destroy(card.gameObject);
         }
         allCards.Clear();
     }

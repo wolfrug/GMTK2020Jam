@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Extensions;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class GameStateEvent : UnityEvent<GameState> { }
@@ -74,6 +75,9 @@ public class GameManager : MonoBehaviour
         {
             gameStateDict.Add(states.state, states);
         }
+    }
+    void Start()
+    {
         currentState = gameStateDict[GameStates.INIT];
         gameStateDict[currentState.state].evtStart.Invoke(currentState);
     }
@@ -128,7 +132,7 @@ public class GameManager : MonoBehaviour
     public void StartNextDay()
     {
         dayCount++;
-        if (dayCount >= 8)
+        if (dayCount >= 9)
         {
             WinGame();
         }
@@ -143,6 +147,7 @@ public class GameManager : MonoBehaviour
     {
         GameState = GameStates.WIN;
         Debug.Log("Victory!!");
+        SceneManager.LoadScene("WinScene");
     }
 
     public DayData GetCurrentDay()
@@ -162,7 +167,7 @@ public class GameManager : MonoBehaviour
         Resource outRes;
         resourceDict.TryGetValue(type, out outRes);
         Mathf.Clamp(outRes.currentValue += amount, -99, outRes.data.maxValue);
-        UIManager.instance.UpdateResource(type);
+        //UIManager.instance.UpdateResource(type);
         if (outRes.currentValue <= 0)
         {
             //Defeat(outRes.data.type);
@@ -194,5 +199,11 @@ public class GameManager : MonoBehaviour
         Debug.Log("LOST BECAUSE OF " + reason);
         currentState = gameStateDict[GameStates.DEFEAT];
         currentState.evtStart.Invoke(currentState);
+        UIManager.instance.DisplayLoseScren(reason);
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
     }
 }

@@ -58,49 +58,61 @@ public class GenericDragAndDrop : MonoBehaviour, IPointerDownHandler, IPointerUp
     }
     public void OnPointerEnter(PointerEventData coll)
     {
-        //   Debug.Log("Pointer enter" + coll);
-        pointerIsOver = true;
-        pointerEntered.Invoke(coll);
+        if (interactable)
+        {
+            //   Debug.Log("Pointer enter" + coll);
+            pointerIsOver = true;
+            pointerEntered.Invoke(coll);
+        };
     }
     public void OnPointerExit(PointerEventData coll)
     {
-        //  Debug.Log("Pointer exit " + coll);
-        pointerIsOver = false;
-        pointerExited.Invoke(coll);
+        if (interactable)
+        {
+            //  Debug.Log("Pointer exit " + coll);
+            pointerIsOver = false;
+            pointerExited.Invoke(coll);
+        };
     }
     public void OnPointerDown(PointerEventData coll)
     {
-        //Debug.Log("Pointer down" + coll);
-        pointerClickLocation = Camera.main.ScreenToWorldPoint(coll.position);
-        if (coll.button == PointerEventData.InputButton.Left && dragWithLeft)
+        if (interactable)
         {
-            pointerIsDown = true;
-            pointerDown.Invoke(coll);
-        }
-        else if (dragWithLeft && coll.button != PointerEventData.InputButton.Left)
-        {
-         //   Debug.Log("Right clicked");
-            rightClick.Invoke(coll);
-        }
-        else
-        {
-            pointerIsDown = true;
-            pointerDown.Invoke(coll);
-        }
-//        Debug.Log(coll.clickCount);
-        if (coll.clickCount > 1)
-        {
-            pointerDoubleClick.Invoke(coll);
-        }
+            //Debug.Log("Pointer down" + coll);
+            pointerClickLocation = Camera.main.ScreenToWorldPoint(coll.position);
+            if (coll.button == PointerEventData.InputButton.Left && dragWithLeft)
+            {
+                pointerIsDown = true;
+                pointerDown.Invoke(coll);
+            }
+            else if (dragWithLeft && coll.button != PointerEventData.InputButton.Left)
+            {
+                //   Debug.Log("Right clicked");
+                rightClick.Invoke(coll);
+            }
+            else
+            {
+                pointerIsDown = true;
+                pointerDown.Invoke(coll);
+            }
+            //        Debug.Log(coll.clickCount);
+            if (coll.clickCount > 1)
+            {
+                pointerDoubleClick.Invoke(coll);
+            }
+        };
     }
     public void OnPointerUp(PointerEventData coll)
     {
-        // Debug.Log("Pointer up" + coll);
-        if (dragWithLeft && coll.button == PointerEventData.InputButton.Left)
+        if (interactable)
         {
-            pointerClickLocation = Vector3.zero;
-            pointerIsDown = false;
-            pointerUp.Invoke(coll);
+            // Debug.Log("Pointer up" + coll);
+            if (dragWithLeft && coll.button == PointerEventData.InputButton.Left)
+            {
+                pointerClickLocation = Vector3.zero;
+                pointerIsDown = false;
+                pointerUp.Invoke(coll);
+            };
         };
     }
 

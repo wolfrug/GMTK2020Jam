@@ -66,8 +66,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: This is a card description!
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b0904aa2133cbba47a9e7c6b9b0e73bf, type: 2}
+  m_sharedMaterial: {fileID: 6132486444269896381, guid: b0904aa2133cbba47a9e7c6b9b0e73bf,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -215,7 +216,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -367,7 +368,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -389,7 +390,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5484422978843518565}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 79617721ba7c2fa4398ed1d3d8b3d8c4, type: 3}
   m_Name: 
@@ -397,6 +398,7 @@ MonoBehaviour:
   targetTransform: {fileID: 7284901516647597472}
   targetCanvas: {fileID: 0}
   interactable: 0
+  interactableStates: d0070000
   dragWithLeft: 1
   pointerIsOver: 0
   pointerIsDown: 0
@@ -472,15 +474,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataPlayer: {fileID: 0}
+  dataEnemy: {fileID: 0}
   cardDescriptionObj: {fileID: 3532986125471490204}
   cardDescriptionText: {fileID: 3399100199693071444}
   startOnRandomSide: 0
   currentSide: 0
-  dataEnemy: {fileID: 0}
   dragScript: {fileID: 3051441467761459611}
+  audioSource: {fileID: 0}
   cardAnimator: {fileID: 5785724800042905147}
   playerSide: {fileID: 4643679137322361161}
   enemySide: {fileID: 823391608793499379}
+  cardPlayed: 0
 --- !u!95 &5785724800042905147
 Animator:
   serializedVersion: 3
@@ -559,7 +563,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
