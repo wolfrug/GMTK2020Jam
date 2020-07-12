@@ -23,6 +23,8 @@ public class GenericDragAndDrop : MonoBehaviour, IPointerDownHandler, IPointerUp
     private int defaultLayer;
     public bool interactable = true;
 
+    public ObjectAudio audioSource;
+
     public List<GameStates> interactableStates = new List<GameStates> { GameStates.DRAFT };
     public bool dragWithLeft = true;
     public bool pointerIsOver = false;
@@ -128,6 +130,10 @@ public class GenericDragAndDrop : MonoBehaviour, IPointerDownHandler, IPointerUp
                     targetTransform.SetParent(DragPoint, true);
                     dragging = true;
                     targetCanvas.sortingOrder = 9999;
+                    if (audioSource != null)
+                    {
+                        audioSource.PlayRandomSoundType(SoundType.CARD_PICKUP);
+                    }
                 }
                 else
                 {
@@ -141,6 +147,10 @@ public class GenericDragAndDrop : MonoBehaviour, IPointerDownHandler, IPointerUp
                     targetTransform.SetParent(null, true);
                     dragging = false;
                     targetCanvas.sortingOrder = defaultLayer + 1;
+                    if (audioSource != null)
+                    {
+                        audioSource.PlayRandomSoundType(SoundType.CARD_PICKUP);
+                    }
                 };
             }
         }

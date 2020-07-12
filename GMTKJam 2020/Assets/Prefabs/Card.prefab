@@ -89,6 +89,7 @@ GameObject:
   - component: {fileID: 5408092970504885319}
   - component: {fileID: 5408092970504885314}
   - component: {fileID: 2883474992292703694}
+  - component: {fileID: 155796164301229510}
   m_Layer: 8
   m_Name: CardCanvas
   m_TagString: Untagged
@@ -114,8 +115,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 292.19745, y: 411.661}
+  m_AnchoredPosition: {x: 0.08, y: 0.03}
+  m_SizeDelta: {x: 358.4193, y: 598.47577}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &5408092970504885317
 Canvas:
@@ -208,6 +209,30 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &155796164301229510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5408092970504885321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4d28fc47aa744f4e8a07807adf3baae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - type: 2100
+    sounds:
+    - {fileID: 8300000, guid: a8a5572d47f45754c9d2e75c13dc7289, type: 3}
+    - {fileID: 8300000, guid: 7f644b5b620837744bf9ebe6454d2f65, type: 3}
+    - {fileID: 8300000, guid: f59c5db9ae2b1cd4db7da00e22c55b5e, type: 3}
+  - type: 2200
+    sounds:
+    - {fileID: 8300000, guid: 2a0a7e16078786749a265a9ae02d6706, type: 3}
+    - {fileID: 8300000, guid: aa43e4963e6a7074393876235c7312a4, type: 3}
+  source: {fileID: 5228702149272112968}
+  initOnStart: 1
 --- !u!1 &5408092970674399045
 GameObject:
   m_ObjectHideFlags: 0
@@ -223,7 +248,6 @@ GameObject:
   - component: {fileID: 2630134756348233835}
   - component: {fileID: 5362950907631218498}
   - component: {fileID: 5228702149272112968}
-  - component: {fileID: 452465028102747821}
   m_Layer: 8
   m_Name: Card
   m_TagString: Card
@@ -240,7 +264,7 @@ Transform:
   m_GameObject: {fileID: 5408092970674399045}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalScale: {x: 0.08, y: 0.08, z: 0.08}
   m_Children:
   - {fileID: 5408092970504885318}
   m_Father: {fileID: 0}
@@ -263,7 +287,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 15.002358, y: 21.03}
+    oldSize: {x: 17.94, y: 29.943865}
     newSize: {x: 15.002358, y: 21.03}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -291,7 +315,7 @@ MonoBehaviour:
   startOnRandomSide: 1
   currentSide: 0
   dragScript: {fileID: 5408092970690980184}
-  audioSource: {fileID: 0}
+  audioSource: {fileID: 155796164301229510}
   cardAnimator: {fileID: 5408092970504885314}
   playerSide: {fileID: 5408092970859771257}
   enemySide: {fileID: 5408092971456838574}
@@ -356,7 +380,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 7fe602064f24a3f4a8aab23d5126ae2a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8f1d5b51d0564b84b949450941f2d178, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -478,20 +502,6 @@ MonoBehaviour:
   sounds:
   - {fileID: 0}
   RandomizeAndPlayOnStart: 0
---- !u!114 &452465028102747821
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5408092970674399045}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4d28fc47aa744f4e8a07807adf3baae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sounds: []
-  source: {fileID: 0}
 --- !u!1 &5408092970690980186
 GameObject:
   m_ObjectHideFlags: 0
@@ -584,6 +594,7 @@ MonoBehaviour:
   targetTransform: {fileID: 5408092970674399040}
   targetCanvas: {fileID: 5408092970504885317}
   interactable: 1
+  audioSource: {fileID: 155796164301229510}
   interactableStates: d0070000
   dragWithLeft: 1
   pointerIsOver: 0

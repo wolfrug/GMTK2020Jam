@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "Data", menuName = "Card Effect Data", order = 1)]
 public class CardEffect : ScriptableObjectBase
@@ -12,6 +13,15 @@ public class CardEffect : ScriptableObjectBase
     public virtual void PlayEffect()
     { // basic effect -> change resource
         GameManager.instance.AddResource(affectedResource, change);
+    }
+    public virtual ObjectSound[] GetSounds
+    {
+        get
+        {
+            List<ObjectSound> returnList = new List<ObjectSound> { };
+            returnList.Add(soundEffect);
+            return returnList.ToArray();
+        }
     }
 
 

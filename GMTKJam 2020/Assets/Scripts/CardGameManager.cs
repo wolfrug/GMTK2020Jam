@@ -96,6 +96,7 @@ public class CardGameManager : MonoBehaviour
         {
             playerHand.Add(card);
             UIManager.instance.AddCardToHand(card.dataPlayer.side_, card);
+            card.audioSource.PlayRandomSoundType(SoundType.CARD_PICKUP);
             card.dragScript.interactable = false;
             card.cardAnimator.SetBool("invisible", true);
         }
@@ -106,6 +107,7 @@ public class CardGameManager : MonoBehaviour
         {
             enemyHand.Add(card);
             UIManager.instance.AddCardToHand(card.dataEnemy.side_, card);
+            card.audioSource.PlayRandomSoundType(SoundType.CARD_PICKUP);
             card.dragScript.interactable = false;
             card.cardAnimator.SetBool("invisible", true);
         }
@@ -158,12 +160,15 @@ public class CardGameManager : MonoBehaviour
         {
             // PLAYER
             randomCard = playerHand[Random.Range(0, playerHand.Count)];
+            // Make sure card is on right side
+            randomCard.FlipToPlayerSide(true);
             yield return StartCoroutine(randomCard.PlayCard(CardSide.PLAYER));
             //Destroy(randomCard.gameObject);
             playerHand.Remove(randomCard);
             yield return StartCoroutine(UIManager.instance.UseCard(randomCard));
             // OCEAN
             randomCard = enemyHand[Random.Range(0, enemyHand.Count)];
+            randomCard.FlipToPlayerSide(false);
             yield return StartCoroutine(randomCard.PlayCard(CardSide.OCEAN));
             //Destroy(randomCard.gameObject);
             enemyHand.Remove(randomCard);

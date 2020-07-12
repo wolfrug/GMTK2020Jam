@@ -163,19 +163,22 @@ public class UIManager : MonoBehaviour
     IEnumerator TeleportCard(CardObject card, CardSide side)
     {
         float timeToPlay = 0f;
+        CardEffect effectSound;
         if (side == CardSide.OCEAN)
         {
             foreach (CardEffect effect in card.dataEnemy.effects)
             {
                 timeToPlay += effect.effectTime;
             }
+            effectSound = card.dataEnemy.effects[0];
         }
         else
         {
-            foreach (CardEffect effect in card.dataEnemy.effects)
+            foreach (CardEffect effect in card.dataPlayer.effects)
             {
                 timeToPlay += effect.effectTime;
             }
+            effectSound = card.dataPlayer.effects[0];
         }
         //card.transform.SetParent(playedCardDisplayTr, true);
         card.cardAnimator.SetBool("invisible", true);
@@ -185,6 +188,8 @@ public class UIManager : MonoBehaviour
         card.cardAnimator.SetBool("invisible", false);
         card.ShowDescription(null);
         UIManager.instance.UpdateAllResources();
+        yield return new WaitForSeconds(timeToPlay / 2f);
+        card.audioSource.PlayRandomSoundTypeFromArray(SoundType.PLAY_CARD, effectSound.GetSounds);
         yield return new WaitForSeconds(timeToPlay / 2f);
         card.cardAnimator.SetBool("invisible", true);
         //Destroy(card, 1f);

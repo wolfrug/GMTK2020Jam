@@ -83,6 +83,7 @@ public class CardObject : MonoBehaviour
                 foreach (CardEffect effect in dataPlayer.effects)
                 {
                     effect.PlayEffect();
+                  //  audioSource.PlayRandomSoundTypeFromArray(SoundType.PLAY_CARD, effect.GetSounds);
                     yield return new WaitForSeconds(effect.effectTime);
                 }
             }
@@ -91,6 +92,7 @@ public class CardObject : MonoBehaviour
                 foreach (CardEffect effect in dataEnemy.effects)
                 {
                     effect.PlayEffect();
+                   // audioSource.PlayRandomSoundTypeFromArray(SoundType.PLAY_CARD, effect.GetSounds);
                     yield return new WaitForSeconds(effect.effectTime);
                 }
             }
@@ -102,6 +104,7 @@ public class CardObject : MonoBehaviour
                 foreach (CardEffect effect in dataPlayer.effects)
                 {
                     effect.PlayEffect();
+                    //audioSource.PlayRandomSoundTypeFromArray(SoundType.PLAY_CARD, effect.GetSounds);
                     yield return new WaitForSeconds(effect.effectTime);
                 }
             }
@@ -110,6 +113,7 @@ public class CardObject : MonoBehaviour
                 foreach (CardEffect effect in dataEnemy.effects)
                 {
                     effect.PlayEffect();
+                    //audioSource.PlayRandomSoundTypeFromArray(SoundType.PLAY_CARD, effect.GetSounds);
                     yield return new WaitForSeconds(effect.effectTime);
                 }
             }
