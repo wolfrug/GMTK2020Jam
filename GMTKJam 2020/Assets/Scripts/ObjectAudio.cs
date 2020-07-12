@@ -53,7 +53,7 @@ public class ObjectAudio : MonoBehaviour
         soundDict.TryGetValue(type, out soundObj);
         if (soundObj != null)
         {
-            Debug.Log("Audioplayer: playing random sound of type " + type);
+//            Debug.Log("Audioplayer: playing random sound of type " + type);
             PlayRandomSound(soundObj);
         }
     }
@@ -72,7 +72,7 @@ public class ObjectAudio : MonoBehaviour
     }
     public void PlayRandomSound(ObjectSound soundObj)
     {
-        Debug.Log("Playing a random sound from soundobject with count " + soundObj.sounds.Count);
+//        Debug.Log("Playing a random sound from soundobject with count " + soundObj.sounds.Count);
         if (soundObj.sounds.Count > 0)
         {
             //randomSounds.Clear ();

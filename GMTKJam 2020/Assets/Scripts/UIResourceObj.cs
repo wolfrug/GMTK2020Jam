@@ -20,7 +20,7 @@ public class UIResourceObj : MonoBehaviour
 
     public void UpdateObj()
     {
-        text.text = GameManager.instance.GetResource(resource.type).ToString();
+        text.text = GameManager.instance.GetResource(resource.type).currentValue.ToString();
         nameText.text = resource.name_ + ":";
     }
     // Update is called once per frame

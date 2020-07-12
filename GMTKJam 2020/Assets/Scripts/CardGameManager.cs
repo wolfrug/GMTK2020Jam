@@ -51,6 +51,7 @@ public class CardGameManager : MonoBehaviour
             CardBase playerSide = currentDay.allPlayerCards.RandomElementByWeight(e => e.Value).Key;
             spawnedCard.dataEnemy = enemySide;
             spawnedCard.dataPlayer = playerSide;
+            spawnedCard.UpdateCard();
             allCards.Add(spawnedCard);
             spawnedCard.transform.position = RandomPointInBounds(spawnZone.bounds);
         }

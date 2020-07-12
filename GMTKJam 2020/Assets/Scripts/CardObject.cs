@@ -17,6 +17,14 @@ public class CardObject : MonoBehaviour
     public Animator cardAnimator;
     public Image playerSide;
     public Image enemySide;
+
+    public TextMeshProUGUI effectTextPlayer;
+    public TextMeshProUGUI effectTextEnemy;
+    public TextMeshProUGUI cardNamePlayer;
+    public TextMeshProUGUI cardNameEnemy;
+
+    public Image resourceIconPlayer;
+    public Image resourceIconEnemy;
     public bool cardPlayed = false;
 
     public static int debugCounter = 0;
@@ -26,8 +34,7 @@ public class CardObject : MonoBehaviour
         dragScript.rightClick.AddListener(FlipCard);
         dragScript.pointerEntered.AddListener(ShowDescription);
         dragScript.pointerExited.AddListener(HideDescription);
-        playerSide.sprite = dataPlayer.image_;
-        enemySide.sprite = dataEnemy.image_;
+        UpdateCard();
         currentSide = cardAnimator.GetBool("flipped") ? dataEnemy.side_ : dataPlayer.side_;
         if (startOnRandomSide)
         {
@@ -36,6 +43,20 @@ public class CardObject : MonoBehaviour
                 FlipCard(null);
             }
         }
+    }
+    public void UpdateCard()
+    {
+        playerSide.sprite = dataPlayer.image_;
+        cardNamePlayer.text = dataPlayer.name_;
+        effectTextPlayer.text = dataPlayer.effects[0].change.ToString();
+        resourceIconPlayer.sprite = GameManager.instance.GetResource(dataPlayer.effects[0].affectedResource).data.icon;
+
+        enemySide.sprite = dataEnemy.image_;
+        cardNameEnemy.text = dataEnemy.name_;
+        effectTextEnemy.text = dataEnemy.effects[0].change.ToString();
+        resourceIconEnemy.sprite = GameManager.instance.GetResource(dataEnemy.effects[0].affectedResource).data.icon;
+
+        currentSide = cardAnimator.GetBool("flipped") ? dataEnemy.side_ : dataPlayer.side_;
     }
 
     void FlipCard(UnityEngine.EventSystems.PointerEventData data)
@@ -83,7 +104,7 @@ public class CardObject : MonoBehaviour
                 foreach (CardEffect effect in dataPlayer.effects)
                 {
                     effect.PlayEffect();
-                  //  audioSource.PlayRandomSoundTypeFromArray(SoundType.PLAY_CARD, effect.GetSounds);
+                    //  audioSource.PlayRandomSoundTypeFromArray(SoundType.PLAY_CARD, effect.GetSounds);
                     yield return new WaitForSeconds(effect.effectTime);
                 }
             }
@@ -92,7 +113,7 @@ public class CardObject : MonoBehaviour
                 foreach (CardEffect effect in dataEnemy.effects)
                 {
                     effect.PlayEffect();
-                   // audioSource.PlayRandomSoundTypeFromArray(SoundType.PLAY_CARD, effect.GetSounds);
+                    // audioSource.PlayRandomSoundTypeFromArray(SoundType.PLAY_CARD, effect.GetSounds);
                     yield return new WaitForSeconds(effect.effectTime);
                 }
             }

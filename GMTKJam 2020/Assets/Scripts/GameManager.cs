@@ -86,7 +86,7 @@ public class GameManager : MonoBehaviour
         foreach (ResourceData res in resources)
         {
             resourceDict.Add(res.type, new Resource(res, res.startValue));
-            Debug.Log("Added resource " + res.type + " with value " + resourceDict[res.type].currentValue);
+//            Debug.Log("Added resource " + res.type + " with value " + resourceDict[res.type].currentValue);
         }
         for (int i = 0; i < days.Length; i++)
         {
@@ -174,11 +174,11 @@ public class GameManager : MonoBehaviour
         }
         Debug.Log("Changed resource " + type.ToString() + " to " + outRes.currentValue);
     }
-    public int GetResource(Resources type)
+    public Resource GetResource(Resources type)
     {
         Resource outRes;
         resourceDict.TryGetValue(type, out outRes);
-        return outRes.currentValue;
+        return outRes;
     }
 
     public bool CheckDefeat()

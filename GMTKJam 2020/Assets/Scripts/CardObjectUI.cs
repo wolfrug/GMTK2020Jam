@@ -26,10 +26,18 @@ public class CardObjectUI : CardObject
     {
         dataEnemy = data;
     }
-    public void UpdateCard(CardSide side)
+    public void UpdateUICard(CardSide side)
     {
         playerSide.sprite = dataPlayer.image_;
+        cardNamePlayer.text = dataPlayer.name_;
+        effectTextPlayer.text = dataPlayer.effects[0].change.ToString();
+        resourceIconPlayer.sprite = GameManager.instance.GetResource(dataPlayer.effects[0].affectedResource).data.icon;
+
         enemySide.sprite = dataEnemy.image_;
+        cardNameEnemy.text = dataEnemy.name_;
+        effectTextPlayer.text = dataEnemy.effects[0].change.ToString();
+        resourceIconEnemy.sprite = GameManager.instance.GetResource(dataEnemy.effects[0].affectedResource).data.icon;
+        
         FlipToPlayerSide(side == dataPlayer.side_);
     }
 

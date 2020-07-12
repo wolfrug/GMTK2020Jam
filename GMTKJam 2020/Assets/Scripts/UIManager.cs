@@ -98,22 +98,22 @@ public class UIManager : MonoBehaviour
         spawnedCard.UpdateEnemyCard(card.dataEnemy);
         spawnedCard.UpdatePlayerCard(card.dataPlayer);
         spawnedCard.Init();
-        spawnedCard.UpdateCard(side);
-        spawnedCard.ShowDescription(null);
+        spawnedCard.UpdateUICard(side);
+        spawnedCard.HideDescription(null);
         if (side == card.dataPlayer.side_)
         {
             playerHand.Add(card, spawnedCard);
-            Debug.Log("Visualizer 0: " + visualizersPlayer[0], visualizersPlayer[0]);
+            //           Debug.Log("Visualizer 0: " + visualizersPlayer[0], visualizersPlayer[0]);
             Destroy(visualizersPlayer[0]);
             visualizersPlayer.RemoveAt(0);
-            Debug.Log("Destroying player visualizer");
+            //           Debug.Log("Destroying player visualizer");
         }
         else
         {
             enemyHand.Add(card, spawnedCard);
             Destroy(visualizersEnemy[0]);
             visualizersEnemy.RemoveAt(0);
-            Debug.Log("Destroying enemy visualizer");
+            //            Debug.Log("Destroying enemy visualizer");
         }
     }
 
@@ -163,14 +163,14 @@ public class UIManager : MonoBehaviour
     IEnumerator TeleportCard(CardObject card, CardSide side)
     {
         float timeToPlay = 0f;
-        CardEffect effectSound;
+        List<ObjectSound> effectSound = new List<ObjectSound> { };
         if (side == CardSide.OCEAN)
         {
             foreach (CardEffect effect in card.dataEnemy.effects)
             {
                 timeToPlay += effect.effectTime;
             }
-            effectSound = card.dataEnemy.effects[0];
+            effectSound.Add(card.dataEnemy.sounds);
         }
         else
         {
@@ -178,7 +178,7 @@ public class UIManager : MonoBehaviour
             {
                 timeToPlay += effect.effectTime;
             }
-            effectSound = card.dataPlayer.effects[0];
+            effectSound.Add(card.dataPlayer.sounds);
         }
         //card.transform.SetParent(playedCardDisplayTr, true);
         card.cardAnimator.SetBool("invisible", true);
@@ -189,10 +189,11 @@ public class UIManager : MonoBehaviour
         card.ShowDescription(null);
         UIManager.instance.UpdateAllResources();
         yield return new WaitForSeconds(timeToPlay / 2f);
-        card.audioSource.PlayRandomSoundTypeFromArray(SoundType.PLAY_CARD, effectSound.GetSounds);
+        card.audioSource.PlayRandomSoundTypeFromArray(SoundType.PLAY_CARD, effectSound.ToArray());
         yield return new WaitForSeconds(timeToPlay / 2f);
         card.cardAnimator.SetBool("invisible", true);
         //Destroy(card, 1f);
+        effectSound.Clear();
     }
 
     public void ClearHands()
