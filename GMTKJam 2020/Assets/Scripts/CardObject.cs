@@ -9,7 +9,9 @@ public class CardObject : MonoBehaviour
     public CardBase dataPlayer;
     public CardBase dataEnemy;
     public GameObject cardDescriptionObj;
+    public GameObject cardDescLongObj;
     public TextMeshProUGUI cardDescriptionText;
+    public TextMeshProUGUI cardDescLongText;
     public bool startOnRandomSide = true;
     public CardSide currentSide;
     public GenericDragAndDrop dragScript;
@@ -49,12 +51,12 @@ public class CardObject : MonoBehaviour
         playerSide.sprite = dataPlayer.image_;
         cardNamePlayer.text = dataPlayer.name_;
         effectTextPlayer.text = dataPlayer.effects[0].change.ToString();
-        resourceIconPlayer.sprite = GameManager.instance.GetResource(dataPlayer.effects[0].affectedResource).data.icon;
+        resourceIconPlayer.sprite = GameManager.instance.GetResource(dataPlayer.effects[0].affectedResource).data.cardIcon;
 
         enemySide.sprite = dataEnemy.image_;
         cardNameEnemy.text = dataEnemy.name_;
         effectTextEnemy.text = dataEnemy.effects[0].change.ToString();
-        resourceIconEnemy.sprite = GameManager.instance.GetResource(dataEnemy.effects[0].affectedResource).data.icon;
+        resourceIconEnemy.sprite = GameManager.instance.GetResource(dataEnemy.effects[0].affectedResource).data.cardIcon;
 
         currentSide = cardAnimator.GetBool("flipped") ? dataEnemy.side_ : dataPlayer.side_;
     }
@@ -62,17 +64,25 @@ public class CardObject : MonoBehaviour
     void FlipCard(UnityEngine.EventSystems.PointerEventData data)
     {
         // Debug.Log("Flipping card");
+        HideDescription(null);
         cardAnimator.SetBool("flipped", !cardAnimator.GetBool("flipped"));
         currentSide = cardAnimator.GetBool("flipped") ? dataEnemy.side_ : dataPlayer.side_;
     }
     public void ShowDescription(UnityEngine.EventSystems.PointerEventData data)
     {
+        Debug.Log("Showing description for card " + gameObject);
         cardDescriptionText.text = currentSide == dataEnemy.side_ ? dataEnemy.description_ : dataPlayer.description_;
         cardDescriptionObj.SetActive(true);
     }
     public void HideDescription(UnityEngine.EventSystems.PointerEventData data)
     {
+        Debug.Log("Hiding description for card " + gameObject);
         cardDescriptionObj.SetActive(false);
+    }
+    public void ShowLongDescription(bool show)
+    {
+        cardDescLongText.text = currentSide == dataEnemy.side_ ? dataEnemy.longDescription_ : dataPlayer.longDescription_;
+        cardDescriptionObj.SetActive(show);
     }
 
     public void FlipToPlayerSide(bool flip)
@@ -96,6 +106,7 @@ public class CardObject : MonoBehaviour
     public IEnumerator PlayCard(CardSide sideToPlay = CardSide.NONE) // plays the good or bad effect
     {
         debugCounter++;
+        dragScript.interactable = false;
         Debug.Log("Cards played total: " + debugCounter);
         if (sideToPlay == CardSide.NONE) // If set to none, play the appropriate side
         {

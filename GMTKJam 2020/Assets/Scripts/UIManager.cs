@@ -186,12 +186,17 @@ public class UIManager : MonoBehaviour
         card.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
         card.transform.position = playedCardDisplayTr.transform.position;
         card.cardAnimator.SetBool("invisible", false);
-        card.ShowDescription(null);
+        Debug.Log("Should now hide description of " + card);
+        card.HideDescription(null);
+        card.cardDescriptionObj.SetActive(false);
+        card.ShowLongDescription(true);
+        card.cardDescLongObj.SetActive(true);
         UIManager.instance.UpdateAllResources();
         yield return new WaitForSeconds(timeToPlay / 2f);
         card.audioSource.PlayRandomSoundTypeFromArray(SoundType.PLAY_CARD, effectSound.ToArray());
         yield return new WaitForSeconds(timeToPlay / 2f);
         card.cardAnimator.SetBool("invisible", true);
+        card.ShowLongDescription(false);
         //Destroy(card, 1f);
         effectSound.Clear();
     }

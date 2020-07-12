@@ -8,5 +8,6 @@ public class ResourceData : ScriptableObjectBase
     public int startValue = 10;
     public int maxValue = 99;
     public Sprite icon;
+    public Sprite cardIcon;
 
 }

@@ -47,7 +47,7 @@ public class Timer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (active)
+        if (active && GameManager.instance.GameState == GameStates.DRAFT)
         {
             timeLeft -= Time.deltaTime;
             if (timeLeft <= 0)

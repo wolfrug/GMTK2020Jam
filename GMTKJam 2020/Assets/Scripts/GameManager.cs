@@ -17,6 +17,7 @@ public enum GameStates
     ASSESS = 4000,
     DEFEAT = 5000,
     WIN = 6000,
+    PAUSE = 7000,
 
 }
 
@@ -86,7 +87,7 @@ public class GameManager : MonoBehaviour
         foreach (ResourceData res in resources)
         {
             resourceDict.Add(res.type, new Resource(res, res.startValue));
-//            Debug.Log("Added resource " + res.type + " with value " + resourceDict[res.type].currentValue);
+            //            Debug.Log("Added resource " + res.type + " with value " + resourceDict[res.type].currentValue);
         }
         for (int i = 0; i < days.Length; i++)
         {
@@ -204,6 +205,31 @@ public class GameManager : MonoBehaviour
 
     public void Restart()
     {
+        Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
+    }
+    public void BackToMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("MainMenu");
+    }
+    public void Pause()
+    {
+        GameState oldState = currentState;
+        GameState pauseState = gameStateDict[GameStates.PAUSE];
+        GameState = GameStates.PAUSE;
+        pauseState.evtStart.Invoke(gameStateDict[GameStates.PAUSE]);
+        StartCoroutine(PauseWaiter(oldState.state));
+        Time.timeScale = 0f;
+    }
+    public void UnPause()
+    {
+        GameState = GameStates.NONE;
+        Time.timeScale = 1f;
+    }
+    IEnumerator PauseWaiter(GameStates continueState)
+    {
+        yield return new WaitUntil(() => GameState != GameStates.PAUSE);
+        GameState = continueState;
     }
 }

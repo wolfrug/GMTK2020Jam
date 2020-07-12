@@ -16,6 +16,8 @@ public class CardBase : ScriptableObjectBase
 
     [Multiline]
     public string description_;
+    [Multiline]
+    public string longDescription_;
     public float weight_ = 1f;
     public CardEffect[] effects;
     public ObjectSound sounds;
