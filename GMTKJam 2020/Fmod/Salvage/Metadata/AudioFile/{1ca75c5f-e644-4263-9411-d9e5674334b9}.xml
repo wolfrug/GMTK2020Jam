@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="AudioFile" id="{1ca75c5f-e644-4263-9411-d9e5674334b9}">
+		<property name="assetPath">
+			<value>Card_Flip_2.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.40462585034013604</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{87b51052-1bfb-41ef-9fbe-81fb93815b75}</destination>
+		</relationship>
+	</object>
+</objects>

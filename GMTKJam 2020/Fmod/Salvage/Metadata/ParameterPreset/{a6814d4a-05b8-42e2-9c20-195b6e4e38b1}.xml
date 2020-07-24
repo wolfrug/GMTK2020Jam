@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="ParameterPreset" id="{a6814d4a-05b8-42e2-9c20-195b6e4e38b1}">
+		<property name="name">
+			<value>Underwater</value>
+		</property>
+		<relationship name="folder">
+			<destination>{2891da8f-eaf9-418a-8341-b937631fb6c5}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{b51f1584-42a0-4663-bb46-4438f6e11b14}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{b51f1584-42a0-4663-bb46-4438f6e11b14}">
+		<property name="isGlobal">
+			<value>true</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+		<property name="isExposedRecursively">
+			<value>false</value>
+		</property>
+		<relationship name="automators">
+			<destination>{562d1964-2db9-4da9-a286-91566ba4c242}</destination>
+		</relationship>
+	</object>
+	<object class="Automator" id="{562d1964-2db9-4da9-a286-91566ba4c242}">
+		<property name="nameOfPropertyBeingAutomated">
+			<value>cursorPosition</value>
+		</property>
+	</object>
+</objects>

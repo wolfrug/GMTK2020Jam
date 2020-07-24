@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="MixerGroup" id="{5b495da8-17f0-4958-907a-e539434e7a96}">
+		<property name="name">
+			<value>AMBNC</value>
+		</property>
+		<relationship name="effectChain">
+			<destination>{33f0cf9f-1a7a-4a67-9bbd-0a5a357794da}</destination>
+		</relationship>
+		<relationship name="panner">
+			<destination>{12d6adf5-c891-498c-8c6f-1b30b2b76a17}</destination>
+		</relationship>
+		<relationship name="output">
+			<destination>{858b5045-7329-49cb-a03b-50ae6425588f}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusEffectChain" id="{33f0cf9f-1a7a-4a67-9bbd-0a5a357794da}">
+		<relationship name="effects">
+			<destination>{2125aef0-cfa0-488e-8ad9-fac02b031a21}</destination>
+			<destination>{ede690b8-9422-4ae3-9548-3eca5677a5a4}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusPanner" id="{12d6adf5-c891-498c-8c6f-1b30b2b76a17}" />
+	<object class="MultibandEqEffect" id="{2125aef0-cfa0-488e-8ad9-fac02b031a21}">
+		<property name="frequencyA">
+			<value>21999.9902</value>
+		</property>
+		<property name="qualityA">
+			<value>0.7961725</value>
+		</property>
+		<relationship name="automators">
+			<destination>{44a762ef-90bd-40fb-a74a-f923753ffb9c}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusFader" id="{ede690b8-9422-4ae3-9548-3eca5677a5a4}" />
+	<object class="Automator" id="{44a762ef-90bd-40fb-a74a-f923753ffb9c}">
+		<property name="nameOfPropertyBeingAutomated">
+			<value>frequencyA</value>
+		</property>
+	</object>
+</objects>
